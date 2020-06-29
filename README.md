@@ -61,13 +61,13 @@ sudo docker exec -it sql1 "bash" \
 
 1. **Download a .zip file from  [this website](https://www.zip-codes.com/account_dbupdate.asp) **
 
-<img src="img/image-20200630001705593.png" alt="image-20200630001705593" style="zoom:50%;" />
+<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/image-20200630001705593.png" alt="image-20200630001705593" style="zoom:40%;" />
 
 
 
 locate the .zip file url
 
-<img src="img/image-20200630005054885.png" alt="image-20200630005054885" style="zoom:50%;" />
+<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/image-20200630005054885.png" alt="image-20200630005054885" style="zoom:50%;" />
 
 Run **crawler.cs** and it will 
 
