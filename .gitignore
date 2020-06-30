@@ -31,3 +31,4 @@ msbuild.wrn
 # this project
 download/
 zipcode.xlsx
+*.csv
