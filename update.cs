@@ -37,38 +37,59 @@ public static class DBUpdate
     public static void AddDataRow(DataTable myTable)
     {
         DataRow myRow = myTable.NewRow();
-        myRow["ZipCode"] = "9950";
-        myRow["City"]="KETCHIKAN";
-        myRow["State"]="AK";
-        myRow["County"]="KETCHIKAN GATEWAY";
-        myRow["AreaCode"]="907";
-        myRow["CityType"]='Z';
-        myRow["CityAliasAbbreviation"]=null;
-        myRow["CityAliasName"]="EDNA BAY";
-        myRow["Latitude"]=55.815857;
-        myRow["Longitude"]=-132.97985;
-        myRow["TimeZone"]="9";
-        myRow["Elevation"]=298;
-        myRow["CountyFIPS"]="130";
-        myRow["DayLightSaving"]='Y';
-        myRow["PreferredLastLineKey"]="Z10161";
-        myRow["ClassificationCode"]='P';
-        myRow["MultiCounty"]=null;
-        myRow["StateFIPS"]="2";
-        myRow["CityStateKey"]="9551";
-        myRow["CityAliasCode"]=null;
-        myRow["PrimaryRecord"]=null;
-        myRow["CityMixedCase"]="Ketchikan";
-        myRow["CityAliasMixedCase"]="Edna Bay";
-        myRow["StateANSI"]="2";
-        myRow["CountyANSI"]="130";
-        myRow["FacilityCode"]='N';
-        myRow["UniqueZIPName"]=null;
-        myRow["CityDeliveryIndicator"]='N';
-        myRow["CarrierRouteRateSortation"]='C';
-        myRow["FinanceNumber"]="24563";
-        myRow["CountyMixedCase"]="Ketchikan Gateway";
+        myRow["Name"] = "Wills";
+        myRow["Phone"] = "67890";
+        myRow["Gender"] = "F";
         myTable.Rows.Add(myRow);
+    }
+
+    // public static void AddDataRow(DataTable myTable)
+    // {
+    //     DataRow myRow = myTable.NewRow();
+    //     myRow["ZipCode"] = "9950";
+    //     myRow["City"]="KETCHIKAN2";
+    //     myRow["State"]="AK";
+    //     myRow["County"]="KETCHIKAN GATEWAY";
+    //     myRow["AreaCode"]="907";
+    //     myRow["CityType"]='Z';
+    //     myRow["CityAliasAbbreviation"]=null;
+    //     myRow["CityAliasName"]="EDNA BAY";
+    //     myRow["Latitude"]=55.815857;
+    //     myRow["Longitude"]=-132.97985;
+    //     myRow["TimeZone"]="9";
+    //     myRow["Elevation"]=298;
+    //     myRow["CountyFIPS"]="130";
+    //     myRow["DayLightSaving"]='Y';
+    //     myRow["PreferredLastLineKey"]="Z10161";
+    //     myRow["ClassificationCode"]='P';
+    //     myRow["MultiCounty"]=null;
+    //     myRow["StateFIPS"]="2";
+    //     myRow["CityStateKey"]="9551";
+    //     myRow["CityAliasCode"]=null;
+    //     myRow["PrimaryRecord"]=null;
+    //     myRow["CityMixedCase"]="Ketchikan";
+    //     myRow["CityAliasMixedCase"]="Edna Bay";
+    //     myRow["StateANSI"]="2";
+    //     myRow["CountyANSI"]="130";
+    //     myRow["FacilityCode"]='N';
+    //     myRow["UniqueZIPName"]=null;
+    //     myRow["CityDeliveryIndicator"]='N';
+    //     myRow["CarrierRouteRateSortation"]='C';
+    //     myRow["FinanceNumber"]="24563";
+    //     myRow["CountyMixedCase"]="Ketchikan Gateway";
+    //     myTable.Rows.Add(myRow);
+    // }
+    
+    public static void DeleteDataRow(DataTable myTable)
+    {
+        // DataRow[] myRows = myTable.Select("ZipCode='99950' AND City='KETCHIKAN' AND County='KETCHIKAN GATEWAY' AND CityAliasAbbreviation=null AND CityAliasName='EDNA BAY' AND PreferredLastLineKey='Z10161' AND CityStateKey='Z10161'");
+        DataRow[] myRows = myTable.Select("Gender='F'");
+        Console.WriteLine(myTable.Rows.Count);
+        Console.WriteLine(myRows.Length);
+        foreach (var row in myRows)
+            myTable.Rows.Remove(row);
+        //myTable.AcceptChanges();
+        Console.WriteLine(myTable.Rows.Count);
     }
     public static void DBConnection()
     {
@@ -76,17 +97,28 @@ public static class DBUpdate
         SqlConnection conn = new SqlConnection(connectString);
         conn.Open();
 
-        SqlDataAdapter myDataAdapter = new SqlDataAdapter("select * from SybottDB.dbo.ZIPCodes", conn);
+        SqlDataAdapter myDataAdapter = new SqlDataAdapter("select * from SybottDB.dbo.Students", conn);
         DataSet myDataSet = new DataSet();
-        myDataAdapter.Fill(myDataSet,"ZIPCodes");
+        myDataAdapter.Fill(myDataSet,"Students");
 
-        DataTable myTable = myDataSet.Tables["ZIPCodes"];
-        AddDataRow(myTable);
+        DataTable myTable = myDataSet.Tables["Students"];
+        //AddDataRow(myTable);
+        DeleteDataRow(myTable);
+
+        Console.WriteLine(myTable.Rows.Count);
 
         SqlCommandBuilder mySqlCommandBuilder = new SqlCommandBuilder(myDataAdapter); 
-        myDataAdapter.Update(myDataSet,"ZIPCodes");
+        myDataAdapter.Update(myDataSet,"Students");
+
+        myDataSet.Dispose();
+        myDataAdapter.Dispose();
+        conn.Close();
+        conn.Dispose();
 
     }
+
+    public 
+
     static void Main(string[] args)
     {
         DBConnection();

@@ -117,3 +117,14 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'U.S. Zip Code Database Standard (from www.zip-codes.com)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ZIPCodes'
 GO
 
+
+-- -- Test
+-- USE SybottDB
+-- GO
+
+-- CREATE TABLE [dbo].[Students](
+--     [Name] [char](5) NOT NULL,
+-- 	[Phone] [varchar](35) NULL,
+-- 	[Gender] [char](2) NULL
+-- )
+-- GO
