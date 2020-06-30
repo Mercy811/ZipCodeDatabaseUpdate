@@ -28,4 +28,6 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
+# this project
 download/
+zipcode.xlsx
