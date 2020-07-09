@@ -118,6 +118,14 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'U.S. Zip Code 
 GO
 
 
+-- ALTER TABLE ZIPCodes ADD PRIMARY KEY (ZipCode)
+-- GO
+
+
+
+
+
+
 -- -- Test
 -- USE SybottDB
 -- GO
