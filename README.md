@@ -39,6 +39,7 @@ docker run --name sql1 \
                     -e 'SA_PASSWORD=1Secure*Password1’ \
                     -e 'MSSQL_PID=Enterprise’ \
                     -p 1433:1433 \
+                    -v ~/Desktop/sybott/dbManagement/://usr/data/ \
                     -d mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
 ```
 
@@ -54,6 +55,11 @@ sudo docker exec -it sql1 "bash" \
 ```
 
 [Use Visual Studio Code to create and run Transact-SQL scripts](https://docs.microsoft.com/en-us/sql/visual-studio-code/sql-server-develop-use-vscode?view=sql-server-ver15)
+
+**Cannot login?**
+
+	Sqlcmd: Error: Microsoft ODBC Driver 17 for SQL Server : Login failed for user 'SA'..
+Maybe due to the password complexity. Checkout [this](https://github.com/microsoft/mssql-docker/issues/315#issuecomment-392957615)
 
 
 

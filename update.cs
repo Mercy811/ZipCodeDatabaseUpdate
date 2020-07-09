@@ -34,14 +34,6 @@ public static class DBUpdate
         ZipFile.ExtractToDirectory(_directory+_zipFileName,_unzipFileDirectory);
     }
 
-    public static void AddDataRow(DataTable myTable)
-    {
-        DataRow myRow = myTable.NewRow();
-        myRow["Name"] = "Wills";
-        myRow["Phone"] = "67890";
-        myRow["Gender"] = "F";
-        myTable.Rows.Add(myRow);
-    }
 
     // public static void AddDataRow(DataTable myTable)
     // {
@@ -80,35 +72,53 @@ public static class DBUpdate
     //     myTable.Rows.Add(myRow);
     // }
     
+    public static void AddDataRow(DataTable myTable)
+    {
+        DataRow myRow = myTable.NewRow();
+        myRow["Name"] = "Mercy";
+        myRow["Phone"] = "11212";
+        myRow["Gender"] = "F";
+        myTable.Rows.Add(myRow);
+    }
+
     public static void DeleteDataRow(DataTable myTable)
     {
         // DataRow[] myRows = myTable.Select("ZipCode='99950' AND City='KETCHIKAN' AND County='KETCHIKAN GATEWAY' AND CityAliasAbbreviation=null AND CityAliasName='EDNA BAY' AND PreferredLastLineKey='Z10161' AND CityStateKey='Z10161'");
-        DataRow[] myRows = myTable.Select("Gender='F'");
+        DataRow[] myRows = myTable.Select("Gender='M'");
+        Console.Write("myTable.Rows.Count: ");
         Console.WriteLine(myTable.Rows.Count);
+        Console.Write("myRows.Length: ");
         Console.WriteLine(myRows.Length);
         foreach (var row in myRows)
-            myTable.Rows.Remove(row);
-        //myTable.AcceptChanges();
+            //myTable.Rows[myTable.Rows.IndexOf(row)].Delete();
+            row.Delete();
+        Console.Write("myTable.Rows.Count: ");
         Console.WriteLine(myTable.Rows.Count);
     }
     public static void DBConnection()
     {
+        //create connection
         string connectString = "Data Source=127.0.0.1,1433;Initial Catalog=SybottDB;User ID=SA;Password=1Secure*Password1";
         SqlConnection conn = new SqlConnection(connectString);
         conn.Open();
 
+        //create data adapter
         SqlDataAdapter myDataAdapter = new SqlDataAdapter("select * from SybottDB.dbo.Students", conn);
+        SqlCommandBuilder mySqlCommandBuilder = new SqlCommandBuilder(myDataAdapter); 
+
+        //create and fill dataset        
         DataSet myDataSet = new DataSet();
         myDataAdapter.Fill(myDataSet,"Students");
 
+        //get data table reference
         DataTable myTable = myDataSet.Tables["Students"];
         //AddDataRow(myTable);
         DeleteDataRow(myTable);
 
-        Console.WriteLine(myTable.Rows.Count);
-
-        SqlCommandBuilder mySqlCommandBuilder = new SqlCommandBuilder(myDataAdapter); 
+        //sumbit local changes to SQL Server
         myDataAdapter.Update(myDataSet,"Students");
+        myTable.AcceptChanges();
+        Console.WriteLine(myTable.Rows.Count);
 
         myDataSet.Dispose();
         myDataAdapter.Dispose();
