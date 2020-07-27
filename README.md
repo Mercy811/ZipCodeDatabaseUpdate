@@ -39,7 +39,7 @@ docker run --name sql1 \
                     -e 'SA_PASSWORD=1Secure*Password1’ \
                     -e 'MSSQL_PID=Enterprise’ \
                     -p 1433:1433 \
-                    -v ~/Desktop/sybott/dbManagement/://usr/data/ \
+                    -v ~/Desktop/sybott/dbManagement/://usr/dbManagement/ \
                     -d mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
 ```
 
@@ -61,11 +61,24 @@ sudo docker exec -it sql1 "bash" \
 	Sqlcmd: Error: Microsoft ODBC Driver 17 for SQL Server : Login failed for user 'SA'..
 Maybe due to the password complexity. Checkout [this](https://github.com/microsoft/mssql-docker/issues/315#issuecomment-392957615)
 
+5. **Initialize ZIPCodes table**
+
+We need to go inside the docker container and copy the zipcode.csv file to another directory, since problem occures when in mount directory.
+
+```
+# go inside the docker
+docker exec -it docker-id /bin/bash
+# copy zipcode.csv to another directory
+mkdir /usr/data
+cp /usr/dbManagement/zipcode.csv /usr/data/
+```
+
 
 
 ## Task Description
 
-1. **Download a .zip file from  [this website](https://www.zip-codes.com/account_dbupdate.asp) **
+1. **Download a .zip file from  [this website](https://www.zip-codes.com/account_dbupdate.asp)**
+
 
 <img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/image-20200630001705593.png" alt="image-20200630001705593" style="zoom:40%;" />
 
@@ -83,4 +96,14 @@ Run **crawler.cs** and it will
 ```
 dotnet run
 ```
+
+2. **Unzip file**
+
+3. **Initialize ZIPCodes DB**
+
+   run *insertData.sql* 
+
+4. **Insert and delete operation**
+
+5. **Read update information from *download/2020-06-Update-STANDARD/2020-06-Update-STANDARD.tab***
 
