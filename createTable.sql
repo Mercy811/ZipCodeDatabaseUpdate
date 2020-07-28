@@ -1,4 +1,4 @@
-/****** Object:  Table [dbo].[ZIPCodes]    Script Date: 6/28/2020 7:20:47 PM ******/
+-- /****** Object:  Table [dbo].[ZIPCodes]    Script Date: 6/28/2020 7:20:47 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,24 +12,24 @@ USE SybottDB
 
 CREATE TABLE [dbo].[ZIPCodes](
 	[ZipCode] [char](5) NOT NULL,
-	[City] [varchar](35) NULL,
+	[City] [varchar](35) NOT NULL,
 	[State] [char](2) NULL,
-	[County] [varchar](45) NULL,
+	[County] [varchar](45) NOT NULL,
 	[AreaCode] [varchar](55) NULL,
 	[CityType] [char](1) NULL,
 	[CityAliasAbbreviation] [varchar](13) NULL,
-	[CityAliasName] [varchar](35) NULL,
+	[CityAliasName] [varchar](35) NOT NULL,
 	[Latitude] [decimal](12, 6) NULL,
 	[Longitude] [decimal](12, 6) NULL,
 	[TimeZone] [char](2) NULL,
 	[Elevation] [int] NULL,
 	[CountyFIPS] [char](5) NULL,
 	[DayLightSaving] [char](1) NULL,
-	[PreferredLastLineKey] [varchar](10) NULL,
+	[PreferredLastLineKey] [varchar](10) NOT NULL,
 	[ClassificationCode] [char](1) NULL,
 	[MultiCounty] [char](1) NULL,
 	[StateFIPS] [char](2) NULL,
-	[CityStateKey] [char](6) NULL,
+	[CityStateKey] [char](6) NOT NULL,
 	[CityAliasCode] [varchar](5) NULL,
 	[PrimaryRecord] [char](1) NULL,
 	[CityMixedCase] [varchar](35) NULL,
@@ -37,10 +37,10 @@ CREATE TABLE [dbo].[ZIPCodes](
 	[StateANSI] [varchar](2) NULL,
 	[CountyANSI] [varchar](3) NULL,
 	[FacilityCode] [varchar](1) NULL,
+	[UniqueZIPName] [varchar](1) NULL,
 	[CityDeliveryIndicator] [varchar](1) NULL,
 	[CarrierRouteRateSortation] [varchar](1) NULL,
 	[FinanceNumber] [varchar](6) NULL,
-	[UniqueZIPName] [varchar](1) NULL,
 	[CountyMixedCase] [varchar](45) NULL
 ) ON [PRIMARY]
 GO
@@ -118,21 +118,8 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'U.S. Zip Code 
 GO
 
 
--- ALTER TABLE ZIPCodes ADD PRIMARY KEY (ZipCode)
--- GO
+ALTER TABLE ZIPCodes ADD PRIMARY KEY (ZipCode,City,County,CityAliasName,PreferredLastLineKey,CityStateKey)
+GO
 
-
-
-
-
-
--- -- Test
--- USE SybottDB
--- GO
-
--- CREATE TABLE [dbo].[Students](
---     [Name] [char](5) NOT NULL,
--- 	[Phone] [varchar](35) NULL,
--- 	[Gender] [char](2) NULL
--- )
+-- ALTER TABLE ZIPCodes DROP CONSTRAINT PK__ZIPCodes__2CC2CDB95A353C73
 -- GO

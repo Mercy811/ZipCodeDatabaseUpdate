@@ -4,12 +4,19 @@ using System.IO;
 using System.IO.Compression;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text;
+using System.Globalization;
+
+using CsvHelper;
+
+using Updating;
 
 public static class DBUpdate
 {
     private static string _directory = "download/";
     private static string _zipFileName = "2020-06-Update-STANDARD.zip";
-    private static string _unzipFileDirectory = _directory+ "2020-06-Update-STANDARD";
+    private static string _unzipFileDirectory = _directory+ "2020-06-Update-STANDARD/";
+    private static string _tabFileName = "2020-06-Update-STANDARD.tab";
 
     public static string DownloadFile(string url)
     {
@@ -127,16 +134,68 @@ public static class DBUpdate
 
     }
 
-    public 
 
-    static void Main(string[] args)
+    public class UpdateTable
     {
-        DBConnection();
+        public char Type { get; set; }
+        public string ZipCode { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string County { get; set; }
+        public string AreaCode { get; set; }
+        public char CityType { get; set; }
+        public string?  CityAliasAbbreviation { get; set; }
+        public string  CityAliasName { get; set; }
+        public float Latitude { get; set; }
+        public float Longitude { get; set; }
+        public string TimeZone { get; set; }
+        public int Elevation { get; set; }
+        public string  CountyFIPS { get; set; }
+        public char DayLightSaving { get; set; }
+        public string  PreferredLastLineKey { get; set; }
+        public string? ClassificationCode  { get; set; }
+        public string? MultiCounty  { get; set; }
+        public string  StateFIPS { get; set; }
+        public string  CityStateKey { get; set; }
+        public string?  CityAliasCode { get; set; }
+        public string? PrimaryRecord  { get; set; }
+        public string  CityMixedCase { get; set; }
+        public string  CityAliasMixedCase { get; set; }
+        public string  StateANSI { get; set; }
+        public string  CountyANSI { get; set; }
+        public char FacilityCode  { get; set; }
+        public string? UniqueZIPName  { get; set; }
+        public char CityDeliveryIndicator  { get; set; }
+        public char CarrierRouteRateSortation  { get; set; }
+        public string  FinanceNumber { get; set; }
+        public string  CountyMixedCase { get; set; }
+
+    }
+
+    public static void Main(string[] args)
+    {
+
+        using (var reader = new StreamReader(_unzipFileDirectory+_tabFileName))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {    
+            csv.Configuration.Delimiter = "\t";
+            csv.Configuration.PrepareHeaderForMatch = (string header, int index) => header.ToLower();
+            var records = csv.GetRecords<UpdateTable>();
+            foreach (var row in records)
+            {
+                Console.WriteLine(row.Type);
+                break;
+            }
+        }
+
+        // // TEST Studnets table 
+        // StudentsUpdate supdate = new StudentsUpdate();
+        // supdate.DBConnection();
 
         // // download 
         // Console.WriteLine("==================1. DOWNLOAD==================");
         // string url = "https://files.zip-codes.com/_updates_a9dh38dyq6ek/2020-06-01_UPDATE_UZJFV7B6/2020-06-Update-STANDARD.zip";
-        // string fileName = FileHandler.DownloadFile(url);
+        // string fileName = DBUpdate.DownloadFile(url);
         // if (!String.IsNullOrEmpty(fileName))
         // {
         //     Console.WriteLine("文件下载成功，文件名称：" + fileName);
@@ -144,7 +203,7 @@ public static class DBUpdate
         // else
         // {
         //     Console.WriteLine("文件下载失败");
-        //     Application.Exit();
+        //     // Application.Exit();
         // }    
         // Console.WriteLine("press Enter to continue.");
         // Console.ReadLine();
@@ -152,6 +211,8 @@ public static class DBUpdate
         // // unzip
         // Console.WriteLine("====================2.UNZIP===================");
         // ExtractFile();
+
+
 
 
     }
