@@ -4,8 +4,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Data.SqlClient;
 using System.Data;
-using System.Text;
 using System.Globalization;
+using System.Collections;
 
 using CsvHelper;
 
@@ -42,98 +42,52 @@ public static class DBUpdate
     }
 
 
-    // public static void AddDataRow(DataTable myTable)
-    // {
-    //     DataRow myRow = myTable.NewRow();
-    //     myRow["ZipCode"] = "9950";
-    //     myRow["City"]="KETCHIKAN2";
-    //     myRow["State"]="AK";
-    //     myRow["County"]="KETCHIKAN GATEWAY";
-    //     myRow["AreaCode"]="907";
-    //     myRow["CityType"]='Z';
-    //     myRow["CityAliasAbbreviation"]=null;
-    //     myRow["CityAliasName"]="EDNA BAY";
-    //     myRow["Latitude"]=55.815857;
-    //     myRow["Longitude"]=-132.97985;
-    //     myRow["TimeZone"]="9";
-    //     myRow["Elevation"]=298;
-    //     myRow["CountyFIPS"]="130";
-    //     myRow["DayLightSaving"]='Y';
-    //     myRow["PreferredLastLineKey"]="Z10161";
-    //     myRow["ClassificationCode"]='P';
-    //     myRow["MultiCounty"]=null;
-    //     myRow["StateFIPS"]="2";
-    //     myRow["CityStateKey"]="9551";
-    //     myRow["CityAliasCode"]=null;
-    //     myRow["PrimaryRecord"]=null;
-    //     myRow["CityMixedCase"]="Ketchikan";
-    //     myRow["CityAliasMixedCase"]="Edna Bay";
-    //     myRow["StateANSI"]="2";
-    //     myRow["CountyANSI"]="130";
-    //     myRow["FacilityCode"]='N';
-    //     myRow["UniqueZIPName"]=null;
-    //     myRow["CityDeliveryIndicator"]='N';
-    //     myRow["CarrierRouteRateSortation"]='C';
-    //     myRow["FinanceNumber"]="24563";
-    //     myRow["CountyMixedCase"]="Ketchikan Gateway";
-    //     myTable.Rows.Add(myRow);
-    // }
-    
-    public static void AddDataRow(DataTable myTable)
+    public static void AddDataRow(DataTable myTable, UpdateTable myUpdateTable)
     {
         DataRow myRow = myTable.NewRow();
-        myRow["Name"] = "Mercy";
-        myRow["Phone"] = "11212";
-        myRow["Gender"] = "F";
+        myRow["ZipCode"] = myUpdateTable.ZipCode;
+        myRow["City"]= myUpdateTable.City;
+        myRow["State"]= myUpdateTable.State;
+        myRow["County"]= myUpdateTable.County;
+        myRow["AreaCode"]= myUpdateTable.AreaCode;
+        myRow["CityType"]= myUpdateTable.CityType;
+        myRow["CityAliasAbbreviation"]= myUpdateTable.CityAliasAbbreviation;
+        myRow["CityAliasName"]= myUpdateTable.CityAliasName;
+        myRow["Latitude"]= myUpdateTable.Latitude;
+        myRow["Longitude"]= myUpdateTable.Longitude;
+        myRow["TimeZone"]= myUpdateTable.TimeZone;
+        myRow["Elevation"]= myUpdateTable.Elevation;
+        myRow["CountyFIPS"]= myUpdateTable.CountyFIPS;
+        myRow["DayLightSaving"]= myUpdateTable.DayLightSaving;
+        myRow["PreferredLastLineKey"]= myUpdateTable.PreferredLastLineKey;
+        myRow["ClassificationCode"]= myUpdateTable.ClassificationCode;
+        myRow["MultiCounty"]= myUpdateTable.MultiCounty;
+        myRow["StateFIPS"]= myUpdateTable.StateFIPS;
+        myRow["CityStateKey"]= myUpdateTable.CityStateKey;
+        myRow["CityAliasCode"]= myUpdateTable.CityAliasCode;
+        myRow["PrimaryRecord"]= myUpdateTable.PrimaryRecord;
+        myRow["CityMixedCase"]= myUpdateTable.CityMixedCase;
+        myRow["CityAliasMixedCase"]= myUpdateTable.CityMixedCase;
+        myRow["StateANSI"]= myUpdateTable.StateANSI;
+        myRow["CountyANSI"]= myUpdateTable.CountyANSI;
+        myRow["FacilityCode"]= myUpdateTable.FacilityCode;
+        myRow["UniqueZIPName"]= myUpdateTable.UniqueZIPName;
+        myRow["CityDeliveryIndicator"]= myUpdateTable.CityDeliveryIndicator;
+        myRow["CarrierRouteRateSortation"]= myUpdateTable.CarrierRouteRateSortation;
+        myRow["FinanceNumber"]= myUpdateTable.FinanceNumber;
+        myRow["CountyMixedCase"]= myUpdateTable.CountyMixedCase;
         myTable.Rows.Add(myRow);
+        Console.WriteLine(myRow.ToString());
     }
 
-    public static void DeleteDataRow(DataTable myTable)
+    public static void DeleteDataRow(DataTable myTable, UpdateTable myUpdateTable)
     {
-        // DataRow[] myRows = myTable.Select("ZipCode='99950' AND City='KETCHIKAN' AND County='KETCHIKAN GATEWAY' AND CityAliasAbbreviation=null AND CityAliasName='EDNA BAY' AND PreferredLastLineKey='Z10161' AND CityStateKey='Z10161'");
-        DataRow[] myRows = myTable.Select("Gender='M'");
-        Console.Write("myTable.Rows.Count: ");
-        Console.WriteLine(myTable.Rows.Count);
-        Console.Write("myRows.Length: ");
-        Console.WriteLine(myRows.Length);
+        string selectCondition = "ZipCode='"+Int32.Parse(myUpdateTable.ZipCode).ToString()+"' AND City='"+myUpdateTable.City+"' AND County='"+myUpdateTable.County+"' AND CityAliasName='"+myUpdateTable.CityAliasName+"' AND PreferredLastLineKey='"+myUpdateTable.PreferredLastLineKey+"' AND CityStateKey='"+myUpdateTable.CityStateKey+"'";
+        Console.WriteLine(selectCondition);
+        DataRow[] myRows = myTable.Select(selectCondition);
         foreach (var row in myRows)
-            //myTable.Rows[myTable.Rows.IndexOf(row)].Delete();
             row.Delete();
-        Console.Write("myTable.Rows.Count: ");
-        Console.WriteLine(myTable.Rows.Count);
     }
-    public static void DBConnection()
-    {
-        //create connection
-        string connectString = "Data Source=127.0.0.1,1433;Initial Catalog=SybottDB;User ID=SA;Password=1Secure*Password1";
-        SqlConnection conn = new SqlConnection(connectString);
-        conn.Open();
-
-        //create data adapter
-        SqlDataAdapter myDataAdapter = new SqlDataAdapter("select * from SybottDB.dbo.Students", conn);
-        SqlCommandBuilder mySqlCommandBuilder = new SqlCommandBuilder(myDataAdapter); 
-
-        //create and fill dataset        
-        DataSet myDataSet = new DataSet();
-        myDataAdapter.Fill(myDataSet,"Students");
-
-        //get data table reference
-        DataTable myTable = myDataSet.Tables["Students"];
-        //AddDataRow(myTable);
-        DeleteDataRow(myTable);
-
-        //sumbit local changes to SQL Server
-        myDataAdapter.Update(myDataSet,"Students");
-        myTable.AcceptChanges();
-        Console.WriteLine(myTable.Rows.Count);
-
-        myDataSet.Dispose();
-        myDataAdapter.Dispose();
-        conn.Close();
-        conn.Dispose();
-
-    }
-
 
     public class UpdateTable
     {
@@ -171,22 +125,57 @@ public static class DBUpdate
         public string  CountyMixedCase { get; set; }
 
     }
-
+    
     public static void Main(string[] args)
     {
 
-        using (var reader = new StreamReader(_unzipFileDirectory+_tabFileName))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-        {    
-            csv.Configuration.Delimiter = "\t";
-            csv.Configuration.PrepareHeaderForMatch = (string header, int index) => header.ToLower();
-            var records = csv.GetRecords<UpdateTable>();
-            foreach (var row in records)
+        //create connection
+        string connectString = "Data Source=127.0.0.1,1433;Initial Catalog=SybottDB;User ID=SA;Password=1Secure*Password1";
+        SqlConnection conn = new SqlConnection(connectString);
+        conn.Open();
+
+        //create data adapter
+        SqlDataAdapter myDataAdapter = new SqlDataAdapter("select * from SybottDB.dbo.ZIPCodes", conn);
+        SqlCommandBuilder mySqlCommandBuilder = new SqlCommandBuilder(myDataAdapter); 
+
+        //create and fill dataset        
+        DataSet myDataSet = new DataSet();
+        myDataAdapter.Fill(myDataSet,"ZIPCodes");
+
+        //get data table reference
+        DataTable myTable = myDataSet.Tables["ZIPCodes"];
+
+        //read from [update].tab file
+        var reader = new StreamReader(_unzipFileDirectory+_tabFileName);
+        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        csv.Configuration.Delimiter = "\t";
+        csv.Configuration.PrepareHeaderForMatch = (string header, int index) => header.ToLower();
+        var records = csv.GetRecords<UpdateTable>();
+        foreach (var row in records)
+        {
+            if (row.Type == 'D')
             {
-                Console.WriteLine(row.Type);
+                continue;
+                DeleteDataRow(myTable, row);
+            }
+            else
+            {
+                AddDataRow(myTable, row);
                 break;
             }
+            
         }
+
+        //sumbit local changes to SQL Server
+        myDataAdapter.Update(myDataSet,"ZIPCodes");
+        myTable.AcceptChanges();
+        Console.WriteLine(myTable.Rows.Count);
+
+        myDataSet.Dispose();
+        myDataAdapter.Dispose();
+        conn.Close();
+        conn.Dispose();
+
 
         // // TEST Studnets table 
         // StudentsUpdate supdate = new StudentsUpdate();
