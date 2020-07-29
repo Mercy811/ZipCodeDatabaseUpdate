@@ -36,7 +36,7 @@ Unhandled exception. ExcelDataReader.Exceptions.HeaderException: Invalid file si
 
 when I tried to open this .xls file, I got the prompt window. This is probably the reason why I got an exception when using *ExcelDataReader*.
 
-![prompt window from Excel](https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/xlsformatnotmatch.png)
+![prompt window from Excel](https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/xlsformatnotmatch.png){:height="50%" width="50%"}
 
 So I read from .tab at last.
 

@@ -45,7 +45,7 @@ public static class DBUpdate
     public static void AddDataRow(DataTable myTable, UpdateTable myUpdateTable)
     {
         DataRow myRow = myTable.NewRow();
-        myRow["ZipCode"] = myUpdateTable.ZipCode;
+        myRow["ZipCode"] = Int32.Parse(myUpdateTable.ZipCode).ToString();
         myRow["City"]= myUpdateTable.City;
         myRow["State"]= myUpdateTable.State;
         myRow["County"]= myUpdateTable.County;
@@ -77,13 +77,13 @@ public static class DBUpdate
         myRow["FinanceNumber"]= myUpdateTable.FinanceNumber;
         myRow["CountyMixedCase"]= myUpdateTable.CountyMixedCase;
         myTable.Rows.Add(myRow);
-        Console.WriteLine(myRow.ToString());
+        Console.WriteLine("Add: ZipCode='"+myRow["ZipCode"]+"' AND City='"+myRow["City"]+"' AND County='"+myRow["County"]+"' AND CityAliasName='"+myRow["CityAliasName"]+"' AND PreferredLastLineKey='"+myRow["PreferredLastLineKey"]+"' AND CityStateKey='"+myRow["CityStateKey"]+"'");
     }
 
     public static void DeleteDataRow(DataTable myTable, UpdateTable myUpdateTable)
     {
         string selectCondition = "ZipCode='"+Int32.Parse(myUpdateTable.ZipCode).ToString()+"' AND City='"+myUpdateTable.City+"' AND County='"+myUpdateTable.County+"' AND CityAliasName='"+myUpdateTable.CityAliasName+"' AND PreferredLastLineKey='"+myUpdateTable.PreferredLastLineKey+"' AND CityStateKey='"+myUpdateTable.CityStateKey+"'";
-        Console.WriteLine(selectCondition);
+        Console.WriteLine("DELETE: "+selectCondition);
         DataRow[] myRows = myTable.Select(selectCondition);
         foreach (var row in myRows)
             row.Delete();
@@ -146,7 +146,7 @@ public static class DBUpdate
         DataTable myTable = myDataSet.Tables["ZIPCodes"];
 
         //read from [update].tab file
-        var reader = new StreamReader(_unzipFileDirectory+_tabFileName);
+        var reader = new StreamReader(_unzipFileDirectory+"test.tab");
         var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Configuration.Delimiter = "\t";
         csv.Configuration.PrepareHeaderForMatch = (string header, int index) => header.ToLower();
@@ -155,13 +155,12 @@ public static class DBUpdate
         {
             if (row.Type == 'D')
             {
-                continue;
                 DeleteDataRow(myTable, row);
+
             }
             else
             {
                 AddDataRow(myTable, row);
-                break;
             }
             
         }
