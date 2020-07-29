@@ -128,8 +128,33 @@ public static class DBUpdate
     
     public static void Main(string[] args)
     {
+        // download 
+        Console.WriteLine("==================1. DOWNLOAD==================");
+        string url = "https://files.zip-codes.com/_updates_a9dh38dyq6ek/2020-06-01_UPDATE_UZJFV7B6/2020-06-Update-STANDARD.zip";
+        string fileName = DBUpdate.DownloadFile(url);
+        if (!String.IsNullOrEmpty(fileName))
+        {
+            Console.WriteLine("Successfully download '" + fileName+"'");
+        }
+        else
+        {
+            Console.WriteLine("Failed to download '"+fileName+"'");
+            // Application.Exit();
+        }    
+        Console.WriteLine("press Enter to continue.");
+        Console.ReadLine();
 
+        // unzip
+        Console.WriteLine("====================2.UNZIP===================");
+        ExtractFile();
+        Console.WriteLine("Successfully unzip the file");
+        Console.WriteLine("press Enter to continue.");
+        Console.ReadLine();
+
+
+        
         //create connection
+        Console.WriteLine("====================3.UNDATE===================");
         string connectString = "Data Source=127.0.0.1,1433;Initial Catalog=SybottDB;User ID=SA;Password=1Secure*Password1";
         SqlConnection conn = new SqlConnection(connectString);
         conn.Open();
@@ -174,35 +199,6 @@ public static class DBUpdate
         myDataAdapter.Dispose();
         conn.Close();
         conn.Dispose();
-
-
-        // // TEST Studnets table 
-        // StudentsUpdate supdate = new StudentsUpdate();
-        // supdate.DBConnection();
-
-        // // download 
-        // Console.WriteLine("==================1. DOWNLOAD==================");
-        // string url = "https://files.zip-codes.com/_updates_a9dh38dyq6ek/2020-06-01_UPDATE_UZJFV7B6/2020-06-Update-STANDARD.zip";
-        // string fileName = DBUpdate.DownloadFile(url);
-        // if (!String.IsNullOrEmpty(fileName))
-        // {
-        //     Console.WriteLine("文件下载成功，文件名称：" + fileName);
-        // }
-        // else
-        // {
-        //     Console.WriteLine("文件下载失败");
-        //     // Application.Exit();
-        // }    
-        // Console.WriteLine("press Enter to continue.");
-        // Console.ReadLine();
-
-        // // unzip
-        // Console.WriteLine("====================2.UNZIP===================");
-        // ExtractFile();
-
-
-
-
     }
 
 }
