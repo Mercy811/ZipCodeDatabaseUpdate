@@ -32,3 +32,6 @@ msbuild.wrn
 download/
 zipcode.xlsx
 *.csv
+
+# log file
+*.log
