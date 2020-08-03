@@ -22,5 +22,6 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <PackageReference Include="Twilio" Version="5.45.1" />
   </ItemGroup>
 </Project>

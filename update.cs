@@ -5,7 +5,11 @@ using System.IO.Compression;
 using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
+
 using NLog;
+
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 using CsvHelper;
 
@@ -90,6 +94,31 @@ public static class DBUpdate
             row.Delete();
     }
 
+    public static void SendMessage(String messageBody)
+    {
+        // Find your Account Sid and Token at twilio.com/console
+        // DANGER! This is insecure. See http://twil.io/secure
+        const string accountSid = "AC1c392b9e24f8f2d230c0fcb6c2d1d1b6";
+        const string authToken = "48dd5e14d980eb5942d84cd3a58a8953";
+
+        TwilioClient.Init(accountSid, authToken);
+
+        var message = MessageResource.Create(
+            body: messageBody,
+            //messagingServiceSid: "PN41e3b638fdd9ea8465633f957aff2688",
+            from: new Twilio.Types.PhoneNumber("+12058101555"),
+            to: new Twilio.Types.PhoneNumber("+8618811522623")
+        );
+
+        Console.WriteLine(message.Sid);
+    }
+
+    public static string CreateExceptionMessage(Exception ex)
+    {
+        string message = "Stopped program because of an exception!\n\nMessage:\n"+ex.Message;
+        return  message;
+    }
+
     public class UpdateTable
     {
         public char Type { get; set; }
@@ -131,6 +160,7 @@ public static class DBUpdate
     {
         try
         {
+     
             // // download 
             // Console.WriteLine("==================1. DOWNLOAD==================");
             // string url = "https://files.zip-codes.com/_updates_a9dh38dyq6ek/2020-06-01_UPDATE_UZJFV7B6/2020-06-Update-STANDARD.zip";
@@ -147,12 +177,12 @@ public static class DBUpdate
             // Console.WriteLine("press Enter to continue.");
             // Console.ReadLine();
 
-            // // unzip
-            // Console.WriteLine("====================2.UNZIP===================");
-            // ExtractFile();
-            // Console.WriteLine("Successfully unzip the file");
-            // Console.WriteLine("press Enter to continue.");
-            // Console.ReadLine();
+            // unzip
+            Console.WriteLine("====================2.UNZIP===================");
+            ExtractFile();
+            Console.WriteLine("Successfully unzip the file");
+            Console.WriteLine("press Enter to continue.");
+            Console.ReadLine();
 
 
             
@@ -208,16 +238,20 @@ public static class DBUpdate
         catch (FileNotFoundException ex)
         {
             logger.Error(ex);
+            SendMessage(CreateExceptionMessage(ex));
+
         }
         catch ( System.Data.SqlClient.SqlException ex)
         {
             logger.Error(ex);
+            SendMessage(CreateExceptionMessage(ex));
         }
-        // catch (Exception ex)
-        // {
-        //     // NLog: catch any exception and log it.
-        //     logger.Error(ex, "Stopped program because of an exception");
-        // }
+        catch (Exception ex)
+        {
+            // NLog: catch any exception and log it.
+            logger.Error(ex, "Stopped program because of an exception");
+            SendMessage(CreateExceptionMessage(ex));
+        }
         finally
         {
             // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
