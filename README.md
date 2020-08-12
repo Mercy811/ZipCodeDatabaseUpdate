@@ -107,4 +107,44 @@ dotnet run
 
 5. **Read update information from *download/2020-06-Update-STANDARD/2020-06-Update-STANDARD.tab***
 
-   
+
+
+
+# Sensitive Data
+
+Cause *update.cs* includes tokens of twilio so [git-crypt](https://github.com/AGWA/git-crypt) is used to encrypte this file to binary. 
+
+Both GPG and symmetric key are supported.
+
+-  **GPG**
+
+First, I need to add the GPG ID of the person I want to share with the following command
+
+```
+git-crypt add-gpg-user USER_ID
+```
+
+It will add and commit a GPG-encrypted key file in the *.git-crypt* directory of the root of the repository
+
+<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/add-gpg-user.png" style="zoom:50%;" />
+
+After cloning encrypted file, unlock with GPG
+
+```
+git-crypt unlock
+```
+
+- **Symmetric Key**
+
+Already exported symmetric key using the following command
+
+```
+git-crypt export-key .git-crypt/symmetric-keys/key
+```
+
+I can share the generated *.git-crypt/symmetric-keys/key* file to collaborators and they can unlock the encrypted file
+
+```
+git-crypt unlock /path/to/key
+```
+

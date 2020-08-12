@@ -35,3 +35,6 @@ zipcode.xlsx
 
 # log file
 *.log
+
+# git-crypt
+.git-crypt/
