@@ -1,1 +1,4 @@
 update.cs filter=git-crypt diff=git-crypt
+
+# exclude .gitattributes from encryption
+.gitattributes !filter !diff

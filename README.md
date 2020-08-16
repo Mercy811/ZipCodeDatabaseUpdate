@@ -79,40 +79,37 @@ cp /usr/dbManagement/zipcode.csv /usr/data/
 
 1. **Download a .zip file from  [this website](https://www.zip-codes.com/account_dbupdate.asp)**
 
+- Clean cookies of Chrome: shift+cmd+delete
 
-<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/image-20200630001705593.png" alt="image-20200630001705593" style="zoom:40%;" />
+<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/clean-cookie.png" style="zoom:50%;" />
 
+when click the buttom in the below picture, Postman will capture two package
 
+<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/image-20200630001705593.png" style="zoom:40%;" />
 
-locate the .zip file url
+- Send POST request to https://www.zip-codes.com/account_login.asp to get cookies
+- Send GET request to https://www.zip-codes.com/account_dbupdate.asp?t=s&action=dl&dluID=3555 to get the locaiton of zip file
 
-<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/image-20200630005054885.png" alt="image-20200630005054885" style="zoom:50%;" />
-
-Run **crawler.cs** and it will 
-
-- download *2020-06-Update-STANDARD.zip* file in download directory and
-- unzip it to *./download/2020-06-Update-STANDARD* directory which has two files: *2020-06-Update-STANDARD.tab* and *2020-06-Update-STANDARD.xls*
-
-```
-dotnet run
-```
+Download *YYYY-MM-Update-STANDARD.zip* file in download directory 
 
 2. **Unzip file**
 
-3. **Initialize ZIPCodes DB**
+Unzip *YYYY-MM-Update-STANDARD.zip* to *./download/YYYY-MM-Update-STANDARD* directory which has two files: *YYYY-MM-Update-STANDARD.tab* and *YYYY-MM-Update-STANDARD.xls*
+
+2. **Initialize ZIPCodes DB**
 
    run *insertData.sql* 
 
-4. **Insert and delete operation**
+3. **Insert and delete operation**
 
-5. **Read update information from *download/2020-06-Update-STANDARD/2020-06-Update-STANDARD.tab***
+4. **Read update information from *download/2020-06-Update-STANDARD/2020-06-Update-STANDARD.tab***
 
 
 
 
 # Sensitive Data
 
-Cause *update.cs* includes tokens of twilio so [git-crypt](https://github.com/AGWA/git-crypt) is used to encrypte this file to binary. 
+Cause *update.cs* includes tokens of twilio and DB so [git-crypt](https://github.com/AGWA/git-crypt) is used to encrypte this file to binary. 
 
 Both GPG and symmetric key are supported.
 
@@ -147,4 +144,6 @@ I can share the generated *.git-crypt/symmetric-keys/key* file to collaborators 
 ```
 git-crypt unlock /path/to/key
 ```
+
+
 
