@@ -123,7 +123,7 @@ git-crypt add-gpg-user USER_ID
 
 It will add and commit a GPG-encrypted key file in the *.git-crypt* directory of the root of the repository
 
-<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/add-gpg-user.png" style="zoom:50%;" />
+<img src="https://github.com/Mercy811/ZipCodeDatabaseUpdate/blob/master/img/add-gpg-user.jpeg" style="zoom:50%;" />
 
 After cloning encrypted file, unlock with GPG
 
