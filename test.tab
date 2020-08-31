@@ -1,0 +1,3 @@
+Type	ZipCode	City	State	County	AreaCode	CityType	CityAliasAbbreviation	CityAliasName	Latitude	Longitude	TimeZone	Elevation	CountyFIPS	DayLightSaving	PreferredLastLineKey	ClassificationCode	MultiCounty	StateFIPS	CityStateKey	CityAliasCode	PrimaryRecord	CityMixedCase	CityAliasMixedCase	StateANSI	CountyANSI	FacilityCode	UniqueZIPName	CityDeliveryIndicator	CarrierRouteRateSortation	FinanceNumber	CountyMixedCase
+D	92007	CARDIFF BY THE SEA	CA	SAN DIEGO	760	N	 	CARDIFF	30.000001	-100.268154	8	166	073	Y	019093	 	 	06	Z20504		 	Cardiff By The Sea	Cardiff	06	073	N		Y	B	052508	San Diego
+A	92007	CARDIFF BY THE SEA	CA	SAN DIEGO	760	N	 	CARDIFF	33.017881	-117.268154	8	166	073	Y	019093	 	 	06	Z20504		 	Cardiff By The Sea	Cardiff	06	073	N		Y	B	052508	San Diego
